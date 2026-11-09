@@ -1,11 +1,18 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import Home from "@/app/page";
+import WelcomePage from "@/app/page";
 
-describe("placeholder home page", () => {
-  it("shows the app name and tagline", () => {
-    render(<Home />);
+describe("welcome screen", () => {
+  it("shows the name, tagline and both ways in", () => {
+    render(<WelcomePage />);
     expect(screen.getByRole("heading", { name: "Tend" })).toBeInTheDocument();
     expect(screen.getByText("Tend to each other.")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Get started" })).toHaveAttribute(
+      "href",
+      "/signup",
+    );
+    expect(
+      screen.getByRole("link", { name: "I have an account" }),
+    ).toHaveAttribute("href", "/login");
   });
 });

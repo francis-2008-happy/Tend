@@ -1,6 +1,12 @@
+import { loadEnvConfig } from "@next/env";
 import { defineConfig, devices } from "@playwright/test";
 
-const PORT = 3100;
+// Same settings as the app (.env.local), so tests can reach Supabase.
+loadEnvConfig(process.cwd());
+
+// Uses your running `npm run dev` on port 3000 if there is one (Next only
+// allows one dev server per project), otherwise starts it.
+const PORT = 3000;
 
 export default defineConfig({
   testDir: "./tests/e2e",
