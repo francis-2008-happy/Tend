@@ -48,6 +48,8 @@ export async function GET(request: NextRequest) {
     target.pathname = "/login";
     target.searchParams.set("link", result);
     target.searchParams.set("flow", flow);
+    // Keep where they were going (e.g. a partner's invite) for after login.
+    if (next !== "/home") target.searchParams.set("next", next);
   }
   return NextResponse.redirect(target);
 }

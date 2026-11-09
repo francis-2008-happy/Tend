@@ -10,6 +10,7 @@ export const PROTECTED_PREFIXES = [
   "/us",
   "/garden",
   "/settings",
+  "/invite",
 ];
 /** Screens only for signed-out visitors. */
 const GUEST_ONLY = ["/login", "/signup", "/forgot-password"];

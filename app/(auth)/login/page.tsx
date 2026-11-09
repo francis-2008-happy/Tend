@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { KeepNextLink } from "@/components/keep-next-link";
 import { Suspense } from "react";
 import { LoginForms } from "./login-forms";
 
@@ -17,12 +17,14 @@ export default function LoginPage() {
       </Suspense>
       <p className="text-center text-muted-foreground">
         New to Tend?{" "}
-        <Link
-          href="/signup"
-          className="inline-flex min-h-11 items-center font-medium text-primary underline underline-offset-4"
-        >
-          Create an account
-        </Link>
+        <Suspense>
+          <KeepNextLink
+            href="/signup"
+            className="inline-flex min-h-11 items-center font-medium text-primary underline underline-offset-4"
+          >
+            Create an account
+          </KeepNextLink>
+        </Suspense>
       </p>
     </div>
   );

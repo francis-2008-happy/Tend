@@ -1,13 +1,8 @@
-import {
-  ArrowRight,
-  CalendarDays,
-  Mail,
-  Settings,
-  UserPlus,
-} from "lucide-react";
+import { ArrowRight, CalendarDays, Mail, Settings } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { CoupleCard } from "@/components/couple/couple-card";
 import { GardenStrip } from "@/components/garden-strip";
 import { LeafSprig } from "@/components/leaf-sprig";
 import { TendCard } from "@/components/tend-card";
@@ -46,6 +41,10 @@ export default function HomePage() {
           A little space for the two of you.
         </p>
       </div>
+
+      <Suspense fallback={<TendCard tone="gold" className="h-40" />}>
+        <CoupleCard />
+      </Suspense>
 
       {/* Today's question: the hero card, as in the mockup */}
       <TendCard className="animate-bloom space-y-4 pr-16">
@@ -92,22 +91,6 @@ export default function HomePage() {
           <ArrowRight className="size-5 shrink-0" aria-hidden="true" />
         </TendCard>
       </Link>
-
-      <TendCard
-        tone="gold"
-        className="animate-bloom flex items-start gap-4 [animation-delay:180ms]"
-      >
-        <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-milestone text-on-accent">
-          <UserPlus className="size-6" aria-hidden="true" />
-        </span>
-        <div className="space-y-1">
-          <h2 className="text-lg">Your couple space is almost ready</h2>
-          <p className="text-muted-foreground">
-            Soon you&apos;ll invite your partner with a link or code over
-            WhatsApp.
-          </p>
-        </div>
-      </TendCard>
 
       <Link
         href="/garden"

@@ -36,6 +36,7 @@ describe("tone of voice", () => {
     ...filesIn("app"),
     ...filesIn("components"),
     ...filesIn("lib/auth"),
+    ...filesIn("lib/couple"),
   ];
 
   it.each(files)("%s has no guilt or scoring words", (file) => {

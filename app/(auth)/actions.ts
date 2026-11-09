@@ -1,6 +1,5 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { friendlyAuthError } from "@/lib/auth/messages";
 import {
@@ -13,6 +12,7 @@ import {
   safeNextPath,
   signUpSchema,
 } from "@/lib/auth/schemas";
+import { siteOrigin } from "@/lib/site";
 import { createClient } from "@/lib/supabase/server";
 
 export type FormState = {
@@ -24,15 +24,6 @@ export type FormState = {
 
 const form = (data: FormData) => Object.fromEntries(data.entries());
 
-/** The address the visitor is using, for links inside emails. */
-async function siteOrigin() {
-  const h = await headers();
-  const host = h.get("x-forwarded-host") ?? h.get("host");
-  const proto = h.get("x-forwarded-proto") ?? "https";
-  if (host) return `${proto}://${host}`;
-  return process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-}
-
 /** Which kind of email link this is, so the callback can explain problems. */
 type LinkFlow = "signup" | "signin" | "reset";
 
@@ -43,13 +34,14 @@ export async function signUp(_: FormState, data: FormData): Promise<FormState> {
   const parsed = signUpSchema.safeParse(form(data));
   if (!parsed.success) return { fieldErrors: fieldErrorsFrom(parsed.error) };
 
+  const next = safeNextPath(data.get("next"));
   const supabase = await createClient();
   const { error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
       data: { display_name: parsed.data.name },
-      emailRedirectTo: await callbackUrl("/home", "signup"),
+      emailRedirectTo: await callbackUrl(next, "signup"),
     },
   });
   // An existing email gets the same reply as a new one (privacy).
@@ -57,7 +49,7 @@ export async function signUp(_: FormState, data: FormData): Promise<FormState> {
     return { error: friendlyAuthError(error) };
 
   redirect(
-    `/check-email?for=signup&email=${encodeURIComponent(parsed.data.email)}`,
+    `/check-email?for=signup&email=${encodeURIComponent(parsed.data.email)}&next=${encodeURIComponent(next)}`,
   );
 }
 

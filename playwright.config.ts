@@ -6,7 +6,9 @@ loadEnvConfig(process.cwd());
 
 // Uses your running `npm run dev` on port 3000 if there is one (Next only
 // allows one dev server per project), otherwise starts it.
-const PORT = 3000;
+// E2E_PORT points the tests at another copy of the app, e.g. one built
+// against the local Supabase database.
+const PORT = Number(process.env.E2E_PORT ?? 3000);
 
 export default defineConfig({
   testDir: "./tests/e2e",

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Suspense } from "react";
+import { KeepNextLink } from "@/components/keep-next-link";
 import { SignUpForm } from "./signup-form";
 
 export const metadata: Metadata = { title: "Create your account" };
@@ -14,15 +15,19 @@ export default function SignUpPage() {
           moment.
         </p>
       </header>
-      <SignUpForm />
+      <Suspense>
+        <SignUpForm />
+      </Suspense>
       <p className="text-center text-muted-foreground">
         Already have an account?{" "}
-        <Link
-          href="/login"
-          className="inline-flex min-h-11 items-center font-medium text-primary underline underline-offset-4"
-        >
-          Log in
-        </Link>
+        <Suspense>
+          <KeepNextLink
+            href="/login"
+            className="inline-flex min-h-11 items-center font-medium text-primary underline underline-offset-4"
+          >
+            Log in
+          </KeepNextLink>
+        </Suspense>
       </p>
     </div>
   );

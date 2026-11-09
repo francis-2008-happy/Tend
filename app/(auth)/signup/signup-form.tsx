@@ -1,15 +1,18 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useActionState } from "react";
 import { FormField, FormMessage, SubmitButton } from "@/components/form-field";
 import { type FormState, signUp } from "../actions";
 
 export function SignUpForm() {
   const [state, action] = useActionState<FormState, FormData>(signUp, {});
+  const next = useSearchParams().get("next") ?? "/home";
 
   return (
     <form action={action} className="space-y-5" noValidate>
       <FormMessage>{state.error}</FormMessage>
+      <input type="hidden" name="next" value={next} />
       <FormField
         label="Your first name"
         name="name"

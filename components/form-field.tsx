@@ -61,13 +61,21 @@ export function FormMessage({ children }: { children?: string }) {
 export function SubmitButton({
   children,
   pendingText,
+  variant,
 }: {
   children: string;
   pendingText: string;
+  variant?: "default" | "outline";
 }) {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" size="lg" disabled={pending} aria-disabled={pending}>
+    <Button
+      type="submit"
+      size="lg"
+      variant={variant}
+      disabled={pending}
+      aria-disabled={pending}
+    >
       {pending ? pendingText : children}
     </Button>
   );
