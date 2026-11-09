@@ -2,9 +2,14 @@
 
 ## Current status
 
-**Phase 1 (design system, app shell, accounts): built and tested on this
-computer. Waiting on a Vercel deploy to test on a real phone (checkpoint).**
-Then: set up a custom email sender before Phase 2.
+**Phase 1 (design system, app shell, accounts): built, tested and live at
+https://tend-weld.vercel.app. Waiting on the owner's phone test
+(checkpoint).** Then: set up a custom email sender before Phase 2.
+
+Deploy notes: Vercel project `tend` is linked to the GitHub repo, so pushes
+to `main` deploy automatically. Vercel holds only the public Supabase URL and
+publishable key (the secret key stays local). Supabase `site_url` and
+redirect URLs include the Vercel address.
 
 ## 2026-11-09 — Phase 1
 
