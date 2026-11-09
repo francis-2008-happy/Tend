@@ -18,20 +18,30 @@ import {
  */
 const CODES_ENABLED = process.env.NEXT_PUBLIC_EMAIL_CODES_ENABLED === "true";
 
+/** What to say after an email link brought someone back to the login screen. */
+export function loginLinkMessage(link: string | null, flow: string | null) {
+  if (link === "elsewhere" && flow === "signup") {
+    return "Your email is confirmed. Welcome to Tend! Log in with your email and password. If you installed Tend, open it from your home screen.";
+  }
+  if (link === "elsewhere") {
+    return "That link opened outside the Tend app, so it couldn't log you in here. Log in with your password instead.";
+  }
+  if (link === "expired") {
+    return "That link has expired or was already used. Please log in again.";
+  }
+  return null;
+}
+
 /** Password login, or an emailed sign-in link / code (codes work inside the installed app). */
 export function LoginForms() {
   const params = useSearchParams();
   const next = params.get("next") ?? "/home";
-  const linkExpired = params.get("link") === "expired";
+  const linkMessage = loginLinkMessage(params.get("link"), params.get("flow"));
   const [mode, setMode] = useState<"password" | "code">("password");
 
   return (
     <div className="space-y-6">
-      {linkExpired ? (
-        <FormMessage>
-          That link has expired or was already used. Please log in again.
-        </FormMessage>
-      ) : null}
+      {linkMessage ? <FormMessage>{linkMessage}</FormMessage> : null}
       {mode === "password" ? (
         <PasswordForm next={next} />
       ) : (

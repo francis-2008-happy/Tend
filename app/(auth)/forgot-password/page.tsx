@@ -1,9 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useActionState } from "react";
 import { FormField, FormMessage, SubmitButton } from "@/components/form-field";
 import { type FormState, sendPasswordReset } from "../actions";
+
+/** Shown when a reset link was opened somewhere other than where it was asked for. */
+function ElsewhereNotice() {
+  const params = useSearchParams();
+  if (params.get("link") !== "elsewhere") return null;
+  return (
+    <FormMessage>
+      Reset links only work in the same browser you asked from, and on iPhone
+      email links open in Safari. Ask for a new link here in this browser and
+      open it on this same device.
+    </FormMessage>
+  );
+}
 
 export default function ForgotPasswordPage() {
   const [state, action] = useActionState<FormState, FormData>(
@@ -20,6 +34,9 @@ export default function ForgotPasswordPage() {
           one.
         </p>
       </header>
+      <Suspense>
+        <ElsewhereNotice />
+      </Suspense>
       <form action={action} className="space-y-5" noValidate>
         <FormMessage>{state.error}</FormMessage>
         <FormField

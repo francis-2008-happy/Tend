@@ -33,8 +33,11 @@ async function siteOrigin() {
   return process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 }
 
-const callbackUrl = async (next: string) =>
-  `${await siteOrigin()}/auth/callback?next=${encodeURIComponent(next)}`;
+/** Which kind of email link this is, so the callback can explain problems. */
+type LinkFlow = "signup" | "signin" | "reset";
+
+const callbackUrl = async (next: string, flow: LinkFlow) =>
+  `${await siteOrigin()}/auth/callback?next=${encodeURIComponent(next)}&flow=${flow}`;
 
 export async function signUp(_: FormState, data: FormData): Promise<FormState> {
   const parsed = signUpSchema.safeParse(form(data));
@@ -46,7 +49,7 @@ export async function signUp(_: FormState, data: FormData): Promise<FormState> {
     password: parsed.data.password,
     options: {
       data: { display_name: parsed.data.name },
-      emailRedirectTo: await callbackUrl("/home"),
+      emailRedirectTo: await callbackUrl("/home", "signup"),
     },
   });
   // An existing email gets the same reply as a new one (privacy).
@@ -82,7 +85,10 @@ export async function sendSignInCode(
     email: parsed.data.email,
     options: {
       shouldCreateUser: false,
-      emailRedirectTo: await callbackUrl(safeNextPath(data.get("next"))),
+      emailRedirectTo: await callbackUrl(
+        safeNextPath(data.get("next")),
+        "signin",
+      ),
     },
   });
   // Only rate limits are reported. "No such account" looks exactly like
@@ -134,7 +140,7 @@ export async function sendPasswordReset(
   const { error } = await supabase.auth.resetPasswordForEmail(
     parsed.data.email,
     {
-      redirectTo: await callbackUrl("/reset-password"),
+      redirectTo: await callbackUrl("/reset-password", "reset"),
     },
   );
   if (error?.code?.startsWith("over_"))
