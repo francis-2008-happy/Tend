@@ -2,8 +2,9 @@
 
 ## Current status
 
-**Phase 0 (project setup): built, waiting on Supabase keys to finish.**
-Next: connect Supabase, then Phase 1 (design system and app shell).
+**Phase 0 (project setup): complete.**
+Next: Phase 1 (design system and app shell), with a small Higgsfield
+moodboard first to settle the look.
 
 ## 2026-11-09 — Phase 0
 
@@ -33,9 +34,12 @@ Next: connect Supabase, then Phase 1 (design system and app shell).
 - **AGENTS.md:** created and maintained by Next.js itself; keep it committed.
   `CLAUDE.md` is ours.
 
+- Supabase connected: `.env.local` filled in and verified (URL, publishable
+  key and secret key all connect), and the CLI is linked to the cloud
+  project. Cloud database has no migrations yet.
+
 ### Open issues
 
-- Supabase keys still needed (see "Next step").
 - `npm audit` shows 8 moderate warnings in development-only tools; the app's
   own dependencies have none.
 - No GitHub repository connected yet.
@@ -44,10 +48,5 @@ Next: connect Supabase, then Phase 1 (design system and app shell).
 
 ### Next step
 
-1. Create a Supabase project at supabase.com (choose a region close to
-   Nigeria, for example Europe West / London).
-2. Copy `.env.example` to `.env.local` and fill in the Supabase URL,
-   publishable key, secret key and project ref.
-3. Run `npx supabase link --project-ref <ref>` to connect the folder.
-4. Then start Phase 1 in a fresh session (`/clear`, plan mode, Phase 1
-   prompt).
+1. Generate a small Higgsfield moodboard (4-6 images) and agree the look.
+2. Start Phase 1 in a fresh session (`/clear`, plan mode, Phase 1 prompt).
