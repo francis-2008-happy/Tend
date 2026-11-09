@@ -48,7 +48,9 @@ test.describe("real account", () => {
 
     await expect(page).toHaveURL(/\/home$/);
     await expect(
-      page.getByRole("heading", { name: "Hello, Ada" }),
+      page.getByRole("heading", {
+        name: /^(Hello|Good (morning|afternoon|evening)), Ada$/,
+      }),
     ).toBeVisible();
 
     // Logged-in visitors skip the welcome and login screens.

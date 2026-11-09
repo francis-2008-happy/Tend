@@ -25,6 +25,13 @@
   --milestone: #d7b875;
   --sage: #82977b; /* borders and decoration only: too faint for text */
   --sage-text: #5e6f58; /* secondary text: 5.0:1 on cream */
+  /* Tints and solids of the palette, so each area has its own colour */
+  --terracotta-strong: #a6492e; /* solid card behind white text: 5.8:1 */
+  --milestone-soft: #f6ecd2;
+  --sage-soft: #e3eadd;
+  --on-accent: #2c302e; /* text on rose and gold solids, both modes */
+  --glow-a: #f3e1d9;
+  --glow-b: #f4ead2;
 
   /* shadcn semantic names */
   --background: var(--cream);
@@ -64,6 +71,11 @@
     --milestone: #d7b875;
     --sage: #6f8468;
     --sage-text: #a3b39c;
+    --terracotta-strong: #9b4730;
+    --milestone-soft: #37321f;
+    --sage-soft: #28342b;
+    --glow-a: #2c2522;
+    --glow-b: #2a2a1f;
 
     --primary-foreground: #1e211d;
     --secondary: #343932;
@@ -105,6 +117,10 @@
   --color-milestone: var(--milestone);
   --color-sage: var(--sage);
   --color-sage-text: var(--sage-text);
+  --color-terracotta-strong: var(--terracotta-strong);
+  --color-milestone-soft: var(--milestone-soft);
+  --color-sage-soft: var(--sage-soft);
+  --color-on-accent: var(--on-accent);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-fraunces), Georgia, "Times New Roman", serif;
@@ -131,12 +147,36 @@
   }
   body {
     @apply bg-background leading-relaxed text-foreground antialiased;
+    /* A soft warm glow at the top, like morning light on paper. */
+    background-image:
+      radial-gradient(ellipse 80% 40% at 0% 0%, var(--glow-a), transparent 70%),
+      radial-gradient(
+        ellipse 70% 35% at 100% 5%,
+        var(--glow-b),
+        transparent 70%
+      );
+    background-repeat: no-repeat;
   }
   h1,
   h2,
   h3 {
     @apply font-heading tracking-tight text-balance;
   }
+}
+
+/* New things arrive with a small bloom (plan section 7). */
+@keyframes bloom {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-bloom {
+  animation: bloom 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 /* Gentle motion only, and none if the phone asks for reduced motion. */

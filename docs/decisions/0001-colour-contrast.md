@@ -18,3 +18,19 @@ WCAG minimum of 4.5:1 for normal text, and these usage rules were added:
 | White on forest sage            | 7.6   | Main buttons                                            |
 
 This fixes the Higgsfield home mockup's white-on-terracotta "Next date" card.
+
+## Update: more colour, less green (2026-11-09)
+
+Feedback after first phone test: too much green, every screen looked the same.
+Green (forest sage) now stays for main buttons and navigation. Each area gets
+its own palette colour (Connect rose, Plan terracotta, Us gold, Garden sage),
+and Home uses a few solid cards like the Higgsfield mockup. New tints only,
+no new hues:
+
+| Pairing                                    | Ratio | Use                         |
+| ------------------------------------------ | ----- | --------------------------- |
+| White on `#A6492E` (`terracotta-strong`)   | 5.8   | Solid "plan" card           |
+| White on `#9B4730` (dark mode)             | 6.3   | Solid "plan" card, dark     |
+| Charcoal on tender `#D9B6B2`               | 7.2   | Solid rose card             |
+| Charcoal on dark tender `#B98F8A`          | 4.7   | Solid rose card, dark       |
+| Charcoal on `#F6ECD2` / `#E3EADD` tints    | 10+   | Gold and sage soft cards    |

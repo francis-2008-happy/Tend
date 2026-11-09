@@ -44,6 +44,13 @@ redirect URLs include the Vercel address.
 - Kept Next 16 "Cache Components": screens that read the login sit behind a
   loading boundary, and the session check is always per request.
 - Removed the five unused Next.js sample images from `public/`.
+- **Livelier look (after first phone test: "too much green, everything looks
+  the same").** Green now only for main buttons and navigation. Each area has
+  its own palette colour (Connect rose, Plan terracotta, Us gold, Garden
+  sage); Home follows the Higgsfield mockup with solid rose and terracotta
+  cards, a time-of-day greeting, a leaf sprig and a garden strip; soft warm
+  glow behind every page; small bloom animation on cards. Only tints of the
+  section 7 palette were added (docs/decisions/0001-colour-contrast.md).
 
 ### Open issues
 
@@ -55,6 +62,10 @@ redirect URLs include the Vercel address.
   once SMTP is set up. Until then: password login, plus emailed sign-in links
   that work in the browser (on iPhone a link opens Safari, not the app).
 - Google sign-in (optional in F1) not built yet.
+- iPhone (WebKit) browser tests can time out when the whole suite runs in
+  parallel against the dev server; they pass when run on their own.
+- Richer illustrations (e.g. a Higgsfield leaf sprig and garden landscape)
+  could replace the hand-drawn sprig later; costs Higgsfield credits.
 - After deploying, add the Vercel address to `site_url` /
   `additional_redirect_urls` in `supabase/config.toml` and push.
 
