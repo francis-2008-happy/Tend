@@ -2,14 +2,60 @@
 
 ## Current status
 
-**Phase 1 (design system, app shell, accounts): built, tested and live at
-https://tend-weld.vercel.app. Waiting on the owner's phone test
-(checkpoint).** Then: set up a custom email sender before Phase 2.
+**Phase 1 complete** (owner logged in on iPhone). **Phase 2 (couple
+linking, unlinking, privacy core): built, tested, database live.** Waiting
+on: Brevo email sender (owner creating account), then the two-phone
+checkpoint with the owner's spouse.
 
 Deploy notes: Vercel project `tend` is linked to the GitHub repo, so pushes
 to `main` deploy automatically. Vercel holds only the public Supabase URL and
 publishable key (the secret key stays local). Supabase `site_url` and
 redirect URLs include the Vercel address.
+
+## 2026-11-10 — Phase 2
+
+### Done
+
+- Database migration `supabase/migrations/20261109230634_couples_and_privacy.sql`
+  (pushed to the live project): profiles (auto-created on sign-up, existing
+  users backfilled), couples, couple_members (one couple per person),
+  invites (6-digit code + 64-character link token, 7 days, one use),
+  invite_attempts (10 wrong guesses an hour), private_entries (owner only),
+  shared_items (couple members only). Row Level Security on every table;
+  couples, members and invites change only through database functions
+  `create_couple`, `create_invite`, `invite_preview`, `redeem_invite`,
+  `leave_couple`.
+- Unlinking (owner's decision): the leaver loses access at once and keeps
+  their private things; the partner who stays keeps the shared things; a
+  space someone left never takes a new partner. The remaining partner can
+  start a fresh space from Settings (this clears the old shared things).
+- Screens: Home couple card (start / waiting / together / on your own),
+  `/invite` (big code, Share on WhatsApp, copy), `/join/<token>` (invited
+  welcome for new partners, then "Join <name>"), `/join` (type a code),
+  Settings "Your couple space" and `/settings/leave` (explains first).
+- Sign-up and log-in keep the invite (`next`) so a new partner lands back on
+  the join screen.
+- Tests: 37 database security tests (`npx supabase test db`, local Docker),
+  74 unit tests, two-partner Playwright test (passes locally and against
+  the live database).
+
+### Decisions
+
+- Database work is developed against a local Supabase (Docker Desktop must
+  be running): `npx supabase start`, then `npx supabase test db`.
+  To run browser tests against it, build with the local URL/keys and set
+  `E2E_PORT` (see playwright.config.ts).
+- Private profile settings will live in their own owner-only table
+  (Phase 3), because partners can read each other's profile row.
+- Mutual reveal (privacy level 3) gets its database function with the daily
+  question (Phase 4).
+
+### Open issues
+
+- Email sender (Brevo) not connected yet; partners can only sign up once it
+  is (Supabase's built-in email only reaches the project team).
+- Deleting an account leaves an empty couple row behind; clean up with
+  account deletion (Phase 3, F8).
 
 ## 2026-11-09 — Phase 1
 
