@@ -19,6 +19,8 @@ test("the app can be installed: manifest and icons are served", async ({
   const manifest = await res.json();
   expect(manifest.name).toBe("Tend");
   expect(manifest.display).toBe("standalone");
+  // New installs must open on the welcome screen, not the login screen.
+  expect(manifest.start_url).toBe("/");
   for (const icon of manifest.icons) {
     expect((await request.get(icon.src)).ok(), icon.src).toBe(true);
   }

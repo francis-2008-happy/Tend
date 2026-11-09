@@ -6,7 +6,9 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Tend",
     short_name: "Tend",
     description: "Tend to each other.",
-    start_url: "/home",
+    // "/" shows the welcome screen to new visitors; proxy.ts sends
+    // signed-in people straight on to /home.
+    start_url: "/",
     scope: "/",
     display: "standalone",
     orientation: "portrait",
