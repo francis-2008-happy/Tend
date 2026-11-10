@@ -52,3 +52,32 @@ trunk. No background, lush and thriving.
 **05 butterfly (SVG):** Single illustrated butterfly, flat vector, terracotta
 and dusty rose wings with soft gold spots, charcoal body, viewed from above,
 symmetrical. No background, no text.
+
+## Phase 3: photos and clips (2026-11-10)
+
+Source files in `phase3/`. Two versions of each photo (`-a`, `-b`); the chosen
+one ships as a 720px WebP in `public/photos/`, clips as-is in `public/clips/`.
+Cost: 16 photos x 0.25 + 3 clips x 15 = 49 credits.
+
+Photos: `gpt_image_2_6`, 3:4. Every prompt starts "Candid documentary-style
+photograph:" and ends "Palette of warm cream, terracotta, sage green and muted
+gold, shallow depth of field, authentic. Calm open space in the upper third.
+No text, no hearts, no wedding imagery."
+
+| Shipped as | Chosen | Scene |
+| --- | --- | --- |
+| balcony.webp | balcony-a | Nigerian couple laughing on a plant-filled Lagos balcony at golden hour |
+| tea.webp | tea-b | Husband handing his wife a cup of tea in a sunlit morning kitchen |
+| planning.webp | planning-a | Couple planning together at a table with a notebook and phone |
+| sofa.webp | sofa-a | Couple relaxing on a sofa on a lazy weekend afternoon, laughing |
+| family.webp | family-b | Parents building colourful blocks with their young child |
+| cooking.webp | cooking-a | Couple cooking jollof rice together, she tastes from the spoon |
+| surprise.webp | surprise-a | Wife covering her husband's eyes before a rooftop picnic surprise |
+| walk.webp | walk-a | Couple walking hand in hand on a lush garden path, evening light |
+
+Clips: `seedance_2_5`, start image = the chosen photo, 5 s, 480p, no audio.
+
+- `welcome.mp4` (balcony): locked-off camera, couple keeps laughing softly,
+  palm leaves sway, golden light shimmers over the city.
+- `cooking.mp4` (cooking): he stirs the pot, steam rises, she tastes and laughs.
+- `walk.mp4` (walk): slow forward drift, couple walks hand in hand, leaves sway.

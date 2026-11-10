@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("welcome screen loads on a phone", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Tend" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Tend to each other/ })).toBeVisible();
   await expect(page).toHaveTitle("Tend");
   await page.getByRole("link", { name: "Get started" }).click();
   await expect(page).toHaveURL(/\/signup$/);

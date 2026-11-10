@@ -1,5 +1,6 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { type NextRequest, NextResponse } from "next/server";
+import { landingAfterSignIn } from "@/lib/auth/landing";
 import { safeNextPath } from "@/lib/auth/schemas";
 import { createClient } from "@/lib/supabase/server";
 
@@ -40,7 +41,7 @@ export async function GET(request: NextRequest) {
   const target = url.clone();
   target.search = "";
   if (result === "ok") {
-    target.pathname = next;
+    target.pathname = flow === "reset" ? next : await landingAfterSignIn(next);
   } else if (result === "elsewhere" && flow === "reset") {
     target.pathname = "/forgot-password";
     target.searchParams.set("link", "elsewhere");

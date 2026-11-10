@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { landingAfterSignIn } from "@/lib/auth/landing";
 import { friendlyAuthError } from "@/lib/auth/messages";
 import {
   codeSchema,
@@ -61,7 +62,7 @@ export async function logIn(_: FormState, data: FormData): Promise<FormState> {
   const { error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) return { error: friendlyAuthError(error) };
 
-  redirect(safeNextPath(data.get("next")));
+  redirect(await landingAfterSignIn(safeNextPath(data.get("next"))));
 }
 
 /** Emails a sign-in link and a 6-digit code (existing accounts only). */
@@ -118,7 +119,7 @@ export async function verifySignInCode(
     };
   }
 
-  redirect(safeNextPath(data.get("next")));
+  redirect(await landingAfterSignIn(safeNextPath(data.get("next"))));
 }
 
 export async function sendPasswordReset(

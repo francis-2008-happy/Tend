@@ -30,6 +30,8 @@ test.describe("real account", () => {
     });
     if (error) throw error;
     userId = data.user.id;
+    // Already seen "About me", so login lands straight on Home.
+    await admin.from("about_me").insert({ user_id: userId });
   });
 
   test.afterEach(async () => {

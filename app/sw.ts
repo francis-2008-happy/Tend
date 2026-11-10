@@ -38,7 +38,7 @@ export const runtimeCaching: RuntimeCaching[] = [
   {
     // Public icons and illustrations shipped with the app.
     matcher: ({ sameOrigin, url }) =>
-      sameOrigin && /^\/(icons|garden|illustrations)\//.test(url.pathname),
+      sameOrigin && /^\/(icons|garden|illustrations|photos|clips)\//.test(url.pathname),
     handler: new CacheFirst({
       cacheName: "tend-public-images",
       plugins: [

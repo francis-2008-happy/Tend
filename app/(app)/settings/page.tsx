@@ -1,10 +1,19 @@
+import { ArrowRight, ShieldCheck, Sparkles, UserRound } from "lucide-react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
-import { PageHeader } from "@/components/page-header";
-import { TendCard } from "@/components/tend-card";
-import { getCurrentUser } from "@/lib/auth/session";
 import { StartSpaceButton } from "@/components/couple/couple-forms";
+import { PageHeader } from "@/components/page-header";
+import { FaithPackToggle } from "@/components/settings/faith-pack-toggle";
+import { TendCard } from "@/components/tend-card";
+import {
+  getMyAboutMe,
+  getMySettings,
+  getPartnerShared,
+} from "@/lib/about-me";
+import { QUESTIONS, labelsFor } from "@/lib/about-me/options";
+import { getCurrentUser } from "@/lib/auth/session";
 import { getMyCouple } from "@/lib/couple";
 import { LogoutButton } from "./logout-button";
 
@@ -20,16 +29,35 @@ export default function SettingsPage() {
           <AccountEmail />
         </Suspense>
       </TendCard>
+      <Suspense fallback={<TendCard className="h-48" />}>
+        <AboutMeSection />
+      </Suspense>
+      <Suspense fallback={null}>
+        <PartnerShared />
+      </Suspense>
+      <Suspense fallback={<TendCard tone="gold" className="h-32" />}>
+        <FaithPack />
+      </Suspense>
       <Suspense fallback={null}>
         <YourCouple />
       </Suspense>
-      <TendCard tone="calm" className="space-y-1">
-        <h2 className="text-lg">Privacy and more</h2>
-        <p className="text-muted-foreground">
-          Your privacy dashboard, data export and notification choices are
-          coming soon.
-        </p>
-      </TendCard>
+      <Link
+        href="/settings/privacy"
+        className="block rounded-2xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      >
+        <TendCard tone="terracotta" className="flex items-center gap-4">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/20">
+            <ShieldCheck className="size-6" aria-hidden="true" />
+          </span>
+          <div className="flex-1">
+            <h2 className="text-lg">Your privacy</h2>
+            <p className="opacity-90">
+              What Tend keeps, who sees it, download or delete.
+            </p>
+          </div>
+          <ArrowRight className="size-5 shrink-0" aria-hidden="true" />
+        </TendCard>
+      </Link>
       <LogoutButton />
     </div>
   );
@@ -44,6 +72,90 @@ async function AccountEmail() {
 
 const settingsLink =
   "inline-flex min-h-11 items-center font-medium text-primary underline underline-offset-4";
+
+async function AboutMeSection() {
+  await getCurrentUser();
+  const about = await getMyAboutMe();
+  const answered = about
+    ? QUESTIONS.filter((q) => labelsFor(q.field, about.answers[q.field]).length)
+    : [];
+  return (
+    <TendCard className="overflow-hidden p-0">
+      <div className="relative h-32">
+        <Image
+          src="/photos/walk.webp"
+          alt=""
+          fill
+          sizes="(min-width: 640px) 28rem, 100vw"
+          className="object-cover object-[50%_40%]"
+        />
+      </div>
+      <div className="space-y-1 p-5">
+        <h2 className="flex items-center gap-2 text-lg">
+          <UserRound className="size-5 text-terracotta" aria-hidden="true" />
+          About me
+        </h2>
+        <p className="text-muted-foreground">
+          {answered.length
+            ? `Your answers are private. You're sharing ${
+                about?.shared.length ? "some" : "none"
+              } of them with your partner.`
+            : "A few easy questions about you, just for you."}
+        </p>
+        <Link
+          href={answered.length ? "/about-me?start=finish" : "/about-me"}
+          className={settingsLink}
+        >
+          {answered.length ? "See and change my answers" : "Answer now"}
+        </Link>
+      </div>
+    </TendCard>
+  );
+}
+
+async function PartnerShared() {
+  await getCurrentUser();
+  const partner = await getPartnerShared();
+  if (!partner) return null;
+  const items = QUESTIONS.map((q) => ({
+    q,
+    labels: labelsFor(q.field, partner.answers[q.field]),
+  })).filter((i) => i.labels.length);
+  if (!items.length) return null;
+  return (
+    <TendCard tone="tender" className="space-y-3">
+      <h2 className="text-lg">What {partner.partnerName} shared with you</h2>
+      <ul className="space-y-2">
+        {items.map(({ q, labels }) => (
+          <li key={q.field}>
+            <p className="text-sm font-semibold text-muted-foreground">
+              {q.title}
+            </p>
+            <p className="font-heading text-lg">{labels.join(", ")}</p>
+          </li>
+        ))}
+      </ul>
+    </TendCard>
+  );
+}
+
+async function FaithPack() {
+  await getCurrentUser();
+  const settings = await getMySettings();
+  return (
+    <TendCard tone="gold" className="space-y-2">
+      <h2 className="flex items-center gap-2 text-lg">
+        <Sparkles className="size-5 text-milestone" aria-hidden="true" />
+        Faith pack
+      </h2>
+      <p className="text-muted-foreground">
+        Optional devotionals and prayers for couples. Your partner chooses
+        separately, and neither of you sees the other&apos;s choice.
+      </p>
+      <FaithPackToggle initial={settings.faithPack} />
+    </TendCard>
+  );
+}
 
 async function YourCouple() {
   const user = await getCurrentUser();

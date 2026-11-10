@@ -31,6 +31,8 @@ test.describe("two partners", () => {
     });
     if (error) throw error;
     made.push(data.user.id);
+    // Already seen "About me", so login lands straight on Home.
+    await admin.from("about_me").insert({ user_id: data.user.id });
     return email;
   }
 

@@ -2,6 +2,7 @@ import { ArrowRight, CalendarDays, Mail, Settings } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { AboutMeCard } from "@/components/about-me/about-me-card";
 import { CoupleCard } from "@/components/couple/couple-card";
 import { GardenStrip } from "@/components/garden-strip";
 import { LeafSprig } from "@/components/leaf-sprig";
@@ -44,6 +45,10 @@ export default function HomePage() {
 
       <Suspense fallback={<TendCard tone="gold" className="h-40" />}>
         <CoupleCard />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <AboutMeCard />
       </Suspense>
 
       {/* Today's question: the hero card, as in the mockup */}
