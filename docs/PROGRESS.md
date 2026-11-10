@@ -3,11 +3,11 @@
 ## Current status
 
 **Phase 1 complete** (owner logged in on iPhone). **Phase 2 (couple
-linking, unlinking, privacy core): built, tested, live.** Two-phone
+linking, unlinking, privacy core): complete.** Two-phone
 checkpoint passed on 2026-11-10: the owner invited their spouse over
 WhatsApp and both phones linked. Brevo email connected the same day.
-Remaining: owner confirms a Brevo email arrives and its link opens on
-iPhone, then Phase 3.
+Owner confirmed a Brevo email arrived and the sign-in code worked.
+Next: plan Phase 3 (onboarding, settings and privacy dashboard, faith pack).
 
 Deploy notes: Vercel project `tend` is linked to the GitHub repo, so pushes
 to `main` deploy automatically. Vercel holds only the public Supabase URL and
