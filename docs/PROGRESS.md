@@ -3,9 +3,11 @@
 ## Current status
 
 **Phase 1 complete** (owner logged in on iPhone). **Phase 2 (couple
-linking, unlinking, privacy core): built, tested, database live.** Waiting
-on: Brevo email sender (owner creating account), then the two-phone
-checkpoint with the owner's spouse.
+linking, unlinking, privacy core): built, tested, live.** Two-phone
+checkpoint passed on 2026-11-10: the owner invited their spouse over
+WhatsApp and both phones linked. Brevo email connected the same day.
+Remaining: owner confirms a Brevo email arrives and its link opens on
+iPhone, then Phase 3.
 
 Deploy notes: Vercel project `tend` is linked to the GitHub repo, so pushes
 to `main` deploy automatically. Vercel holds only the public Supabase URL and
@@ -52,8 +54,12 @@ redirect URLs include the Vercel address.
 
 ### Open issues
 
-- Email sender (Brevo) not connected yet; partners can only sign up once it
-  is (Supabase's built-in email only reaches the project team).
+- Brevo connected 2026-11-10 (`[auth.email.smtp]` in config.toml, values
+  from `.env.local`; push with `supabase config push` after loading the
+  `SUPABASE_SMTP_*` vars). Tend templates on, links use `token_hash` so they
+  work in any browser, sign-in emails carry a 6-digit code, limit 30/hour.
+  Sender is a Gmail address, so early emails may land in spam; a domain fixes
+  that later. The storage `vector` setting differs from remote; left alone.
 - Deleting an account leaves an empty couple row behind; clean up with
   account deletion (Phase 3, F8).
 
@@ -100,7 +106,7 @@ redirect URLs include the Vercel address.
 
 ### Open issues
 
-- **Custom email sender needed.** Supabase's free plan blocks Tend's own
+- **Resolved 2026-11-10 (Brevo).** **Custom email sender needed.** Supabase's free plan blocks Tend's own
   email templates (and so the 6-digit code) while using Supabase's built-in
   sender, and the built-in sender only delivers to project team members a
   few times an hour. Templates are ready in `supabase/templates/`; enable

@@ -202,7 +202,7 @@ password_requirements = ""
 
 [auth.rate_limit]
 # Number of emails that can be sent per hour. Requires auth.email.smtp to be enabled.
-email_sent = 2
+email_sent = 30
 # Number of SMS messages that can be sent per hour. Requires auth.sms to be enabled.
 sms_sent = 30
 # Number of anonymous sign-ins that can be made per hour per IP address. Requires enable_anonymous_sign_ins = true.
@@ -239,32 +239,31 @@ otp_length = 6
 # Number of seconds before the email OTP expires (defaults to 1 hour).
 otp_expiry = 3600
 
-# Use a production-ready SMTP server
-# [auth.email.smtp]
-# enabled = true
-# host = "smtp.sendgrid.net"
-# port = 587
-# user = "apikey"
-# pass = "env(SENDGRID_API_KEY)"
-# admin_email = "admin@email.com"
-# sender_name = "Admin"
+# Emails go out through Brevo (free plan, sender verified in Brevo).
+# Values come from .env.local and are never committed.
+[auth.email.smtp]
+enabled = true
+host = "smtp-relay.brevo.com"
+port = 587
+user = "env(SUPABASE_SMTP_USER)"
+pass = "env(SUPABASE_SMTP_PASS)"
+admin_email = "env(SUPABASE_SMTP_SENDER)"
+sender_name = "Tend"
 
-# Tend email templates (warm wording; the sign-in email includes a 6-digit code
-# so it works inside the installed app).
-# DISABLED: Supabase's free plan only allows custom templates with a custom
-# SMTP sender. Uncomment after SMTP is set up (needed before phase 2), then
-# set NEXT_PUBLIC_EMAIL_CODES_ENABLED=true.
-# [auth.email.template.confirmation]
-# subject = "Welcome to Tend: please confirm your email"
-# content_path = "./supabase/templates/confirmation.html"
-#
-# [auth.email.template.magic_link]
-# subject = "Your Tend sign-in code"
-# content_path = "./supabase/templates/magic_link.html"
-#
-# [auth.email.template.recovery]
-# subject = "Choose a new Tend password"
-# content_path = "./supabase/templates/recovery.html"
+# Tend email templates. Links use token_hash so they work in any browser
+# (on iPhone, email links open in Safari, not the installed app); the
+# sign-in email also carries a 6-digit code.
+[auth.email.template.confirmation]
+subject = "Welcome to Tend: please confirm your email"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.magic_link]
+subject = "Your Tend sign-in code"
+content_path = "./supabase/templates/magic_link.html"
+
+[auth.email.template.recovery]
+subject = "Choose a new Tend password"
+content_path = "./supabase/templates/recovery.html"
 
 # Uncomment to customize notification email template
 # [auth.email.notification.password_changed]
