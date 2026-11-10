@@ -7,12 +7,60 @@ linking, unlinking, privacy core): complete.** Two-phone
 checkpoint passed on 2026-11-10: the owner invited their spouse over
 WhatsApp and both phones linked. Brevo email connected the same day.
 Owner confirmed a Brevo email arrived and the sign-in code worked.
-Next: plan Phase 3 (onboarding, settings and privacy dashboard, faith pack).
+**Phase 3 (About me onboarding, privacy dashboard, faith pack): built,
+tested, live.** Waiting on the checkpoint: both partners complete About me,
+download their data and see the privacy dashboard on their phones.
 
 Deploy notes: Vercel project `tend` is linked to the GitHub repo, so pushes
 to `main` deploy automatically. Vercel holds only the public Supabase URL and
 publishable key (the secret key stays local). Supabase `site_url` and
 redirect URLs include the Vercel address.
+
+## 2026-11-10 — Phase 3
+
+### Done
+
+- Migration `supabase/migrations/20261110205741_onboarding_and_settings.sql`
+  (pushed live; new tables only): `about_me` (owner only; allowed values
+  checked by the database; `shared_fields` lists answers the owner chose to
+  show) and `my_settings` (faith pack, owner only). Functions:
+  `partner_about_me()` (only shared answers, only while both are in the same
+  live space), `export_my_data()` (everything about you, nothing private of
+  your partner's), `delete_my_account()` (leaves the space like
+  `leave_couple`, removes an empty space, deletes the login so everything
+  cascades). 23 new pgTAP tests (60 database tests in total).
+- Owner decisions: answers private by default with a "Show my partner"
+  switch per answer; deleting happens straight away after typing DELETE;
+  real-looking photos plus a few short clips instead of illustrations.
+- About me (`/about-me`): intro, six questions (love languages up to 2, naira
+  budget band, free time, kids, interests, surprises or plans), iPhone-only
+  "Add to Home Screen" step when not installed, finish screen "What you told
+  us about you" with share switches. Saves each answer as you go; every step
+  skippable; "I'll do this later". First sign-in goes there once
+  (`lib/auth/landing.ts`, plus a Home check); after that a gentle Home card
+  until finished.
+- Settings: About me card, "What {partner} shared with you", faith pack
+  switch, privacy card. `/settings/privacy` shows what Tend keeps and who sees
+  each part, "Download my data" (`/settings/privacy/export`, JSON file,
+  no-store), and `/settings/delete` (explain, type DELETE, clear the phone,
+  `/goodbye`).
+- Visuals: welcome screen redesigned around a full-width moving photo.
+  8 Higgsfield photos (`public/photos/*.webp`, 31-73 KB) and 3 clips
+  (`public/clips/*.mp4`, 0.3-1.1 MB); `components/live-photo.tsx` shows the
+  still first, plays the silent clip only without reduce-motion or
+  data-saver. Sources and prompts in `design/higgsfield/phase3/` and the
+  README. 49 Higgsfield credits used.
+- Tests: 96 unit tests, 60 database tests, 11 browser tests per phone type,
+  including a two-partner About me / share / download / delete test.
+
+### Open issues
+
+- Live users with no About me row (the owner and spouse) see About me once
+  on their next visit; that's intended.
+- The test iPhone browser can't save downloads, so the iPhone test reads the
+  export directly; the owner checks the real download on an iPhone.
+- On iPhone, a file downloaded from the installed app may open in a preview
+  sheet; if that's awkward, switch to the share sheet.
 
 ## 2026-11-10 — Phase 2
 
