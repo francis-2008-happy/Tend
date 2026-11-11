@@ -7,9 +7,9 @@ linking, unlinking, privacy core): complete.** Two-phone
 checkpoint passed on 2026-11-10: the owner invited their spouse over
 WhatsApp and both phones linked. Brevo email connected the same day.
 Owner confirmed a Brevo email arrived and the sign-in code worked.
-**Phase 3 (About me onboarding, privacy dashboard, faith pack): built,
-tested, live.** Waiting on the checkpoint: both partners complete About me,
-download their data and see the privacy dashboard on their phones.
+**Phase 3 (About me onboarding, privacy dashboard, faith pack): complete.**
+Two-phone checkpoint passed on 2026-11-11: owner reported everything working.
+Next: a UI polish pass on existing screens (owner request), then Phase 4.
 
 Deploy notes: Vercel project `tend` is linked to the GitHub repo, so pushes
 to `main` deploy automatically. Vercel holds only the public Supabase URL and
